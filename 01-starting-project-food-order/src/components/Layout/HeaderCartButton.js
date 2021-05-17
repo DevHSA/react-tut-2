@@ -1,17 +1,40 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from "react";
+import CartIcon from "../Cart/CartIcon";
+import classes from "./HeaderCartButton.module.css";
+import CartContext from "../../store/cart-context";
 
-import CartIcon from '../Cart/CartIcon'
-import classes from './HeaderCartButton.module.css'
+const HeaderCartButton = (props) => {
+  const cartCtx = useContext(CartContext);
+  const [btnClasses, setBtnClasses] = useState(`${classes.button}`);
+  //   console.log(cartCtx.items);
+  const numberOfCartItems = cartCtx.items.reduce((accumulator, currVal) => {
+    return currVal.amount + accumulator;
+  }, 0);
 
-const HeaderCartButton = () => {
+  useEffect(() => {
+    if (cartCtx.items.length === 0) {
+      return;
+    }
+    setBtnClasses(`${classes.button} ${classes.bump}`);
 
-    return (
-        <button className={classes.button}>
-            <span className={classes.icon}><CartIcon/></span>
-            <span>Your Cart</span>
-            <span className={classes.badge}>3</span>
-        </button>
-    )
-}
+    const timer = setTimeout(() => {
+      setBtnClasses(`${classes.button}`);
+    }, 300);
 
-export default HeaderCartButton
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [cartCtx.items]);
+
+  return (
+    <button className={btnClasses} onClick={props.onClick}>
+      <span className={classes.icon}>
+        <CartIcon />
+      </span>
+      <span>Your Cart</span>
+      <span className={classes.badge}>{numberOfCartItems}</span>
+    </button>
+  );
+};
+
+export default HeaderCartButton;
