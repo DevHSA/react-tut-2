@@ -1,41 +1,44 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useHttp = (requestConfig, applyData) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendRequest = async (taskText) => {
+  console.log("HOOK CALLED");
+  
+  const sendRequest = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await fetch(
-        "https://react-my-burger-72b2e-default-rtdb.firebaseio.com/tasks.json"
+        requestConfig.url,
+        {
+          method: requestConfig.method ? requestConfig.method : "GET",
+          header: requestConfig.header ? requestConfig.header : {},
+          body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
+        }
       );
-
+      console.log("INSIDE SEND REQUEST", response)
       if (!response.ok) {
         throw new Error("Request failed!");
       }
 
       const data = await response.json();
 
-      const loadedTasks = [];
+      
 
-      for (const taskKey in data) {
-        loadedTasks.push({ id: taskKey, text: data[taskKey].text });
-      }
-
-      setTasks(loadedTasks);
+      applyData(data);
     } catch (err) {
       setError(err.message || "Something went wrong!");
     }
     setIsLoading(false);
-  };
+  },[applyData])
 
   return {
-      isLoading: isLoading,
-      error:
+    isLoading,
+    error,
+    sendRequest,
   };
-
 };
 
 export default useHttp;

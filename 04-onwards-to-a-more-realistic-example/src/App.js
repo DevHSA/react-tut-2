@@ -1,19 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
 
-import Tasks from './components/Tasks/Tasks';
-import NewTask from './components/NewTask/NewTask';
+import Tasks from "./components/Tasks/Tasks";
+import NewTask from "./components/NewTask/NewTask";
 
-import useHttp from './hooks/use-http'
+import useHttp from "./hooks/use-http";
 
 function App() {
-  
   const [tasks, setTasks] = useState([]);
 
-  
+  const setTasksHandler = useCallback((data) => {
+    const loadedTasks = [];
+    for (const taskKey in data) {
+      loadedTasks.push({ id: taskKey, text: data[taskKey].text });
+    }
+    setTasks(loadedTasks);
+  },[])
+
+  let {
+    isLoading,
+    error,
+    sendRequest: fetchTasks,
+  } = useHttp(
+    {
+      url: "https://react-my-burger-72b2e-default-rtdb.firebaseio.com/tasks.json",
+    },
+    setTasksHandler
+  );
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
