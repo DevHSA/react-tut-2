@@ -14,21 +14,17 @@ function App() {
       loadedTasks.push({ id: taskKey, text: data[taskKey].text });
     }
     setTasks(loadedTasks);
-  },[])
+  }, []);
 
-  let {
-    isLoading,
-    error,
-    sendRequest: fetchTasks,
-  } = useHttp(
-    {
-      url: "https://react-my-burger-72b2e-default-rtdb.firebaseio.com/tasks.json",
-    },
-    setTasksHandler
-  );
+  let { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
   useEffect(() => {
-    fetchTasks();
+    fetchTasks(
+      {
+        url: "https://react-my-burger-72b2e-default-rtdb.firebaseio.com/tasks.json",
+      },
+      setTasksHandler
+    );
   }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
