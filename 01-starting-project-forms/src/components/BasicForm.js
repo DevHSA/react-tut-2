@@ -4,31 +4,38 @@ import useInp from "../hooks/use-inp";
 const BasicForm = (props) => {
   const {
     value: fnameValue,
-    touched: fnameTouched,
     valid: fnameValid,
+    error: fnameError,
     setInputHandler: setNameInputHandler,
     setTouchedHandler: setNameTouchedHandler,
-    error: fnameError
-  } = useInp((value)=>value.trim() !== '');
+  } = useInp((value) => value.trim() !== "");
 
-  const formValidity =() =>{
+  let formIsValid;
 
-    return fnameValid;
-
-  }
+  formIsValid = fnameValid;
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    formValidity();
+    if (!formIsValid) return;
   };
 
+ 
   return (
     <form onSubmit={formSubmitHandler}>
       <div className="control-group">
-        <div className="form-control">
+        <div className={fnameError ? "form-control invalid" : "form-control"}>
           <label htmlFor="name">First Name</label>
-          <input type="text" id="name" className="invalid" onChange={setNameInputHandler} onBlur={setNameTouchedHandler}/>
-          {fnameError && <div className="error-text">Please Enter First Name</div>}
+          <input
+            type="text"
+            id="name"
+            
+            value={fnameValue}
+            onChange={setNameInputHandler}
+            onBlur={setNameTouchedHandler}
+          />
+          {fnameError && (
+            <div className="error-text">Please Enter First Name</div>
+          )}
         </div>
         <div className="form-control">
           <label htmlFor="name">Last Name</label>

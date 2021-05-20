@@ -8,7 +8,7 @@ const useInp = (validationFunction) =>{
     // const [valid, setValid] = useState(false);
 
     const valid = validationFunction(value);
-    const error = touched && valid;
+    const error = touched && !valid;
 
     const setInputHandler = (event) => {
         setValue(event.target.value);
@@ -18,7 +18,12 @@ const useInp = (validationFunction) =>{
         setTouched(true);
     }
 
-    return {value,touched,valid, setInputHandler,setTouchedHandler,error}
+    const reset = () => {
+        setTouched(false);
+        setValue('');
+    }
+
+    return {value,valid, error,setInputHandler,setTouchedHandler,reset}
 };
 
 export default useInp;
