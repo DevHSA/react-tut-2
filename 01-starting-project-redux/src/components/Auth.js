@@ -1,8 +1,21 @@
 import classes from './Auth.module.css';
+import {authActions} from '../store/auth-reducer'
+import {useDispatch} from 'react-redux'
 
 const Auth = () => {
+  
+  const dispatcher = useDispatch();
+
+  const onLoginHandler = (event) =>{
+
+    event.preventDefault();
+
+    dispatcher(authActions.login());
+    
+  }
+
   return (
-    <main className={classes.auth}>
+    <main className={classes.auth} onSubmit={onLoginHandler}>
       <section>
         <form>
           <div className={classes.control}>
