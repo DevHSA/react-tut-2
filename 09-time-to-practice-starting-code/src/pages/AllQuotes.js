@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import QuoteList from '../components/quotes/QuoteList'
 
 const DUMMY_QUOTES = [
