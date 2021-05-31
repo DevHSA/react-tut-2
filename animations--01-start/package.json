@@ -9,7 +9,7 @@
     "react-transition-group": "^4.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "SET PORT=5500 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

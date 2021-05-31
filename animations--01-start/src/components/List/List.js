@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import TransitionGroup from 'react-transition-group/TransitionGroup'
+import CSSTransition from 'react-transition-group/CSSTransition'
 import './List.css';
 
 class List extends Component {
@@ -8,6 +9,7 @@ class List extends Component {
     }
 
     addItemHandler = () => {
+        console.log('ADD')
         this.setState((prevState) => {
             return {
                 items: prevState.items.concat(prevState.items.length + 1)
@@ -16,6 +18,7 @@ class List extends Component {
     }
 
     removeItemHandler = (selIndex) => {
+        console.log('SUBTRACT')
         this.setState((prevState) => {
             return {
                 items: prevState.items.filter((item, index) => index !== selIndex)
@@ -35,9 +38,9 @@ class List extends Component {
             <div>
                 <button className="Button" onClick={this.addItemHandler}>Add Item</button>
                 <p>Click Item to Remove.</p>
-                <ul className="List">
+                <TransitionGroup component="ul" className="List">
                     {listItems}
-                </ul>
+                </TransitionGroup>
             </div>
         );
     }
