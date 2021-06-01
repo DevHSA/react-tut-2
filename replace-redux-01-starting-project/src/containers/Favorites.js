@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useSelector } from 'react-redux';
-
+import {FavContext} from '../components/ContextStore/fav-context'
 import FavoriteItem from '../components/Favorites/FavoriteItem';
 import './Products.css';
 
 const Favorites = props => {
-  const favoriteProducts = useSelector(state =>
-    state.shop.products.filter(p => p.isFavorite)
-  );
+
+  const ctx = useContext(FavContext);
+
+  const favoriteProducts = ctx.products.filter(p => p.isFavorite)
+  
+    
+
   let content = <p className="placeholder">Got no favorites yet!</p>;
   if (favoriteProducts.length > 0) {
     content = (
